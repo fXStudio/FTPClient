@@ -1,0 +1,40 @@
+.fxstudio-window-innerComponent {
+    background: transparent;
+    padding: 10px;
+}
+
+.fxstudio-window-inner-margin3 {
+    margin-top: 3px
+}
+
+.add {
+    background-image: url(../images/add.png) !important;
+}
+
+.del {
+    background-image: url(../images/del.png) !important;
+}
+
+.update {
+    background-image: url(../images/update.png) !important;
+}
+.search {
+    background-image: url(../images/search.png) !important;
+}
+.feed-icon {
+    background-image: url(../images/feed-icon.png) !important;
+}
+
+.complete span.x-tree-node-text  {
+    text-decoration: line-through;
+    color: #777;
+}
+
+.tips {
+    color: red;
+    font-size: 8pt;
+    font-style: italic;
+}
+span.must{color:red;font-size:16pt;}
+
+#numberfield-1029-inputEl{width: 100px;}

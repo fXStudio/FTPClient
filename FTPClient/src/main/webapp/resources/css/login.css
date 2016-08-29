@@ -1,0 +1,45 @@
+body,
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+div.login-back{width:100%;height:100%;}
+div.login-banner {
+    position: absolute;
+    height: 90px;
+    width: 620px;
+    top: 50%;
+    left: 50%;
+    margin-top: -220px;
+    margin-left: -300px;
+}
+
+div.login-banner{
+	background-image: URL(../images/login-banner.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+}
+
+.login {
+    background: URL(../images/login.png) no-repeat 0 0 !important;
+}
+.x-window-header-text-default {
+	font-weight: bolder;
+	color: #dddfe0;
+	font-size:11pt;
+	font-style: italic;
+}
+.x-form-item-input-row td {
+	height: 35px;
+}
+.x-form-item-input-row td input{
+    height: 30px;
+    font-size:11pt;
+}
+.x-form-item-label {
+	color:#797d7f;
+	font-size:10pt;
+	font-weight: bolder;
+	margin-top:2px;
+}

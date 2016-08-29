@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper的配置信息 -->
+<mapper namespace="com.expressway.ftp.client.mapper.AnalyticalMapper">
+    <resultMap id="analyticalMap" type="Analytical">
+        <id property="carImage" column="car_image" />
+        <result property="exitDate" column="exit_date"/>
+    </resultMap>
+
+	<select id="getRecords" resultMap="analyticalMap" parameterType="String">
+	    SELECT car_image, exit_date
+	    FROM   st_analytical_tbl
+        WHERE   #{param2} >= exit_date AND exit_date >= #{param1}
+	</select>
+</mapper>
