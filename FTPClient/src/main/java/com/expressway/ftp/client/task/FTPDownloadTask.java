@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,9 @@ public class FTPDownloadTask {
 	/** 日期工具 */
 	private DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
+	/** 日志工具类 */
+	private Logger log = Logger.getLogger("com.expressway.ftp.client.task");
+
 	/**
 	 * 定时作业
 	 */
@@ -31,6 +35,8 @@ public class FTPDownloadTask {
 
 		// 我们要获取的数据日期
 		String queryDate = df.format(cal.getTime());
+
+		log.debug("Execute at : " + queryDate);
 
 		// 应为查询需要提供时间范围，所以默认的时间范围为一天
 		ftpDownloader.download(analyticalMapper.getRecords(queryDate, queryDate));
