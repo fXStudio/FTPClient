@@ -16,22 +16,11 @@
 	</bean>
 
 	<!--配置数据源 -->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="${jdbc.driverClass}" />
-		<property name="jdbcUrl" value="${jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
-		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
-		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
-		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
-		<property name="maxIdleTime" value="${c3p0.maxIdleTime}" />
-		<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}" />
-		<property name="maxStatements" value="${c3p0.maxStatements}" />
-		<property name="numHelperThreads" value="${c3p0.numHelperThreads}" />
-		<property name="checkoutTimeout" value="${c3p0.checkoutTimeout}" />
-	</bean>
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">  
+        <property name="jndiName">  
+            <value>java:comp/env/fxstudio/jndi</value>  
+        </property>  
+    </bean>
 
 	<!-- Spring的事务管理 -->
 	<bean id="transactionManager"
