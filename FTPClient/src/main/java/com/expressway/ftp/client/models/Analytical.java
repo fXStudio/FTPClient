@@ -4,7 +4,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
  * @author Ajaxfan
  */
 @Table(name = "st_analytical_tbl")
@@ -12,6 +11,7 @@ public class Analytical {
 	@Id
 	private String carImage;
 	private String exitDate;
+	private String imageLoaded;
 
 	public String getCarImage() {
 		return carImage;
@@ -27,5 +27,13 @@ public class Analytical {
 
 	public void setCarImage(String carImage) {
 		this.carImage = carImage;
+	}
+
+	public String getImageLoaded() {
+		return imageLoaded;
+	}
+
+	public void setImageLoaded(String imageLoaded) {
+		this.imageLoaded = imageLoaded;
 	}
 }

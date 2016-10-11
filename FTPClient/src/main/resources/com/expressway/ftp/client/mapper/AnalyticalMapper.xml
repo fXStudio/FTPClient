@@ -11,6 +11,13 @@
 	<select id="getRecords" resultMap="analyticalMap" parameterType="String">
 	    SELECT car_image, exit_date
 	    FROM   st_analytical_tbl
-        WHERE   #{param2} >= exit_date AND exit_date >= #{param1}
+        <choose>
+           <when test="param1 != null and param2 != null">
+               WHERE   #{param2} >= exit_date AND exit_date >= #{param1}
+           </when>
+           <otherwise>
+               WHERE image_loaded = '0'
+            </otherwise>
+         </choose>
 	</select>
 </mapper>

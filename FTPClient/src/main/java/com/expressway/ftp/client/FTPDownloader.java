@@ -9,9 +9,11 @@ import java.util.List;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.expressway.ftp.client.mapper.AnalyticalMapper;
 import com.expressway.ftp.client.models.Analytical;
 
 /**
@@ -32,11 +34,12 @@ public class FTPDownloader {
 	/** 本地路径 */
 	private @Value("${com.expressway.ftp.local_directory}") String local;
 
-	/** FTP连接工具 */
-	private FTPClient clientObject = new FTPClient();
-
 	/** 日志工具类 */
 	private Logger log = Logger.getLogger("com.expressway.ftp.client");
+	
+
+	/** ETC稽查数据接口 */
+	private @Autowired AnalyticalMapper analyticalMapper;
 
 	/**
 	 * 下载远程服务器文件
@@ -52,6 +55,10 @@ public class FTPDownloader {
 			// 通过数据结果集来从服务器拉取图片，如果结果集为空，则本地目录不会被创建
 			for (Analytical analytical : list) {
 				retriveFileFromRemote(analytical);
+				analytical.setImageLoaded("1");
+				
+				// 更新数据状态
+				analyticalMapper.updateByPrimaryKey(analytical);
 			}
 			return true;
 		} catch (IOException e) {
@@ -69,9 +76,10 @@ public class FTPDownloader {
 	 */
 	private void retriveFileFromRemote(Analytical analytical) throws IOException {
 		OutputStream out = null;
+		FTPClient ftp = null;
 
 		try {
-			FTPClient ftp = getClient();
+			ftp = getClient();
 			// 本地文件夹对象
 			File localDir = new File(local + File.separator + analytical.getExitDate());
 			// 如果文件夹不存在，需要先创建
@@ -80,7 +88,7 @@ public class FTPDownloader {
 			}
 			// 设置当前FTP工作目录
 			ftp.changeWorkingDirectory(analytical.getExitDate());
-			
+
 			// 数据缓存
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
@@ -101,6 +109,16 @@ public class FTPDownloader {
 					out = null;
 				}
 			}
+			if (ftp != null) {
+				try {
+					if (ftp.isConnected()) {
+						ftp.logout();
+						ftp.disconnect();
+					}
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -111,20 +129,11 @@ public class FTPDownloader {
 	 * @throws IOException
 	 */
 	private FTPClient getClient() throws IOException {
-		boolean isAlive = false;
+		FTPClient client = new FTPClient();
+		client.connect(url, port);
+		client.login(username, password);
+		client.enterLocalPassiveMode();
 
-		// 为了避免FTP连接被重复创建，我们这里通过发送stat指令到FTP服务器
-		// 检查连接是否有效，只有在连接无效的情况下，才能执行连接的重建
-		try {
-			isAlive = clientObject.sendNoOp();
-		} catch (Exception e) {
-			log.debug("FTP Connection is closed");
-		} finally {
-			if (!isAlive) {
-				clientObject.connect(url, port);// 登陆的用户名和密码
-				clientObject.login(username, password);// 登录
-			}
-		}
-		return clientObject;
+		return client;
 	}
 }

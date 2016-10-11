@@ -22,14 +22,17 @@ public class ManualDownloadController {
 	private @Autowired AnalyticalMapper analyticalMapper;
 	/** FTP文件下载 */
 	private @Autowired FTPDownloader ftpDownloader;
-	
+
 	/**
+	 * 下载图片
+	 * 
 	 * @param request
 	 * @param cf
 	 * @return
 	 */
 	@RequestMapping("manualdownload")
 	public Object systemLogin(HttpServletRequest request, ConditionFiled cf) {
-		return new FeedBackMessage(ftpDownloader.download(analyticalMapper.getRecords(cf.getBeginDate(), cf.getEndDate())));
+		return new FeedBackMessage(
+				ftpDownloader.download(analyticalMapper.getRecords(cf.getBeginDate(), cf.getEndDate())));
 	}
 }
