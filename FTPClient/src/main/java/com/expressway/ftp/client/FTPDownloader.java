@@ -36,7 +36,6 @@ public class FTPDownloader {
 
 	/** 日志工具类 */
 	private Logger log = Logger.getLogger("com.expressway.ftp.client");
-	
 
 	/** ETC稽查数据接口 */
 	private @Autowired AnalyticalMapper analyticalMapper;
@@ -54,9 +53,10 @@ public class FTPDownloader {
 		try {
 			// 通过数据结果集来从服务器拉取图片，如果结果集为空，则本地目录不会被创建
 			for (Analytical analytical : list) {
-				retriveFileFromRemote(analytical);
-				analytical.setImageLoaded("1");
-				
+				boolean res = retriveFileFromRemote(analytical);
+				analytical.setScaned("1");// 数据已扫描标识
+				analytical.setImageLoaded(res ? "1" : "0");// 有图为1否则为0
+
 				// 更新数据状态
 				analyticalMapper.updateByPrimaryKey(analytical);
 			}
@@ -74,9 +74,11 @@ public class FTPDownloader {
 	 * @param analytical
 	 * @throws IOException
 	 */
-	private void retriveFileFromRemote(Analytical analytical) throws IOException {
+	private boolean retriveFileFromRemote(Analytical analytical) throws IOException {
 		OutputStream out = null;
 		FTPClient ftp = null;
+
+		boolean writed = false;
 
 		try {
 			ftp = getClient();
@@ -93,7 +95,7 @@ public class FTPDownloader {
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 			// 写出文件到本地
-			boolean writed = ftp.retrieveFile(analytical.getCarImage(), buffer);
+			writed = ftp.retrieveFile(analytical.getCarImage(), buffer);
 
 			if (writed == true) {// 本地文件的流工具
 				out = new FileOutputStream(localDir.getPath() + File.separator + analytical.getCarImage());
@@ -120,6 +122,7 @@ public class FTPDownloader {
 				}
 			}
 		}
+		return writed;
 	}
 
 	/**

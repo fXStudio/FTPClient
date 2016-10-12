@@ -12,6 +12,7 @@ public class Analytical {
 	private String carImage;
 	private String exitDate;
 	private String imageLoaded;
+	private String scaned;
 
 	public String getCarImage() {
 		return carImage;
@@ -35,5 +36,13 @@ public class Analytical {
 
 	public void setImageLoaded(String imageLoaded) {
 		this.imageLoaded = imageLoaded;
+	}
+
+	public String getScaned() {
+		return scaned;
+	}
+
+	public void setScaned(String scaned) {
+		this.scaned = scaned;
 	}
 }
