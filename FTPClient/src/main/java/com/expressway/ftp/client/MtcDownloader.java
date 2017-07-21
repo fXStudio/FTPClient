@@ -32,6 +32,8 @@ public class MtcDownloader {
 	private @Value("${com.expressway.mtc.ftp.password}") String password;
 	/** 本地路径 */
 	private @Value("${com.expressway.mtc.ftp.local_directory}") String local;
+	/** 连接超时 */
+	private @Value("${com.expressway.mtc.ftp.connection-timeout}") int timeout;
 
 	/** 日志工具类 */
 	private Logger log = Logger.getLogger("com.expressway.ftp.client");
@@ -48,8 +50,7 @@ public class MtcDownloader {
 			// 通过数据结果集来从服务器拉取图片，如果结果集为空，则本地目录不会被创建
 			for (MtcModel model : list) {
 				boolean res = retriveFileFromRemote(model);
-				model.setAdmId("1");// 数据已扫描标识
-				model.setTagid(res ? "1" : "");// 有图为1否则为0
+				model.setAdmId(res ? "1" : "0");// 有图为1否则为0
 
 				// 更新数据状态
 				mapper.updateByPrimaryKey(model);
@@ -89,7 +90,7 @@ public class MtcDownloader {
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 			for (int i = 0; i < 2; i++) {
-				String name = (i == 0 ? model.getRecordNo() + "_outin" :  model.getRecordNo()) + ".jpg";
+				String name = (i == 0 ? model.getRecordNo() + "_outin" : model.getRecordNo()) + ".jpg";
 
 				// 写出文件到本地
 				writed = ftp.retrieveFile(name, buffer);
@@ -105,7 +106,7 @@ public class MtcDownloader {
 				try {
 					out.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.error(e.getMessage());
 				} finally {
 					out = null;
 				}
@@ -116,8 +117,10 @@ public class MtcDownloader {
 						ftp.logout();
 						ftp.disconnect();
 					}
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				} catch (IOException e) {
+					log.error(e.getMessage());
+				} finally {
+					ftp = null;
 				}
 			}
 		}
@@ -135,6 +138,7 @@ public class MtcDownloader {
 		client.connect(url, port);
 		client.login(username, password);
 		client.enterLocalPassiveMode();
+		client.setConnectTimeout(timeout);
 
 		return client;
 	}

@@ -19,9 +19,9 @@
                WHERE  #{param2} >= exit_date AND exit_date >= #{param1}
            </when>
            <otherwise>
-               WHERE tagid is null
+               <![CDATA[WHERE ((tagid < ${maxLoop} AND adm_id != '1') OR tagid is null)]]> 
             </otherwise>
          </choose>
-         <![CDATA[AND rownum < 10000]]> 
+         <![CDATA[AND rownum < ${maxRecords}]]> 
 	</select>
 </mapper>

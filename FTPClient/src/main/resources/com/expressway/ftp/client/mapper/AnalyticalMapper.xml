@@ -13,12 +13,15 @@
 	    FROM   st_analytical_tbl
         <choose>
            <when test="param1 != null and param2 != null">
-               WHERE   #{param2} >= exit_date AND exit_date >= #{param1}
+               <!-- 带有参数的方法调用是由前台触发的，它的指令等级最高。将强制读取条件内的全部数据。 -->
+               WHERE #{param2} >= exit_date AND exit_date >= #{param1}
            </when>
            <otherwise>
-               WHERE image_loaded = '0'
+                <!-- 一条无图的记录，最多轮询5次 -->
+                <![CDATA[WHERE scaned < ${maxLoop} AND image_loaded = '0']]> 
             </otherwise>
          </choose>
-         <![CDATA[AND rownum < 10000]]> 
+         <!-- 大结果集会造成Java内存溢出，因此设置每个表单次只读取10000行记录 -->
+         <![CDATA[AND rownum < ${maxRecords}]]> 
 	</select>
 </mapper>

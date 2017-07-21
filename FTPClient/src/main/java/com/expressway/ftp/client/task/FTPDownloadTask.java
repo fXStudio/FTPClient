@@ -50,9 +50,9 @@ public class FTPDownloadTask {
 	 * @throws InterruptedException
 	 */
 	public void process() throws InterruptedException {
-		log.debug("Execute at : " + GregorianCalendar.getInstance().getTime());
+		log.info("Execute at : " + GregorianCalendar.getInstance().getTime());
 
-		runEtcLoader();
+		// runEtcLoader();
 		runMtcLoader();
 	}
 
@@ -72,7 +72,9 @@ public class FTPDownloadTask {
 		for (IMtcMapper mapper : new IMtcMapper[] { changecardMapper, enterthecarMapper, freenotfreeMapper,
 				heavytruckMapper, longlightMapper, losecardMapper, tollcollectorMapper, typenotmatchMapper,
 				weightdevicearnormalMapper }) {
-			mtcDownloader.download(mapper.getRecords(), mapper);
+			// mtcDownloader.download(mapper.getRecords(), mapper);
+
+			System.out.println(mapper.getRecords().size());
 		}
 	}
 }

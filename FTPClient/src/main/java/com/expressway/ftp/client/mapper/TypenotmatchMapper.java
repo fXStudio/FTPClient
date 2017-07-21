@@ -11,6 +11,6 @@ import com.expressway.ftp.client.models.MtcModel;
  * @author Ajaxfan
  */
 public interface TypenotmatchMapper extends IMtcMapper  {
-	@Update("UPDATE freeway_typenotmatch SET tagid = #{tagid} WHERE record_no = #{recordNo}")
+	@Update("UPDATE freeway_typenotmatch SET adm_id = #{admId}, tagid = nvl(tagid + 1, 1) WHERE record_no = #{recordNo}")
 	int updateByPrimaryKey(MtcModel model);
 }

@@ -2,17 +2,20 @@ package com.expressway.ftp.client.mapper;
 
 import java.util.List;
 
-import com.expressway.ftp.client.models.EtcModel;
+import org.apache.ibatis.annotations.Update;
 
-import tk.mybatis.mapper.common.base.BaseUpdateMapper;
+import com.expressway.ftp.client.models.EtcModel;
 
 /**
  * 记录数据
  * 
  * @author Ajaxfan
  */
-public interface AnalyticalMapper extends BaseUpdateMapper<EtcModel> {
+public interface AnalyticalMapper {
 	public List<EtcModel> getRecords(String beginDate, String endDate);
 
 	public List<EtcModel> getRecords();
+	
+	@Update("")
+	public int updateRecord(EtcModel model);
 }

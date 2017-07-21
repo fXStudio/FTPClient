@@ -33,6 +33,8 @@ public class EtcDownloader {
 	private @Value("${com.expressway.etc.ftp.password}") String password;
 	/** 本地路径 */
 	private @Value("${com.expressway.etc.ftp.local_directory}") String local;
+	/** 连接超时 */
+	private @Value("${com.expressway.etc.ftp.connection-timeout}") int timeout;
 
 	/** 日志工具类 */
 	private Logger log = Logger.getLogger("com.expressway.ftp.client");
@@ -50,18 +52,16 @@ public class EtcDownloader {
 	public boolean download(List<EtcModel> list) {
 		try {
 			// 通过数据结果集来从服务器拉取图片，如果结果集为空，则本地目录不会被创建
-			for (EtcModel analytical : list) {
-				boolean res = retriveFileFromRemote(analytical);
-				analytical.setScaned("1");// 数据已扫描标识
-				analytical.setImageLoaded(res ? "1" : "0");// 有图为1否则为0
+			for (EtcModel model : list) {
+				boolean res = retriveFileFromRemote(model);
+				model.setImageLoaded(res ? "1" : "0");// 有图为1否则为0
 
 				// 更新数据状态
-				analyticalMapper.updateByPrimaryKey(analytical);
+				analyticalMapper.updateRecord(model);
 			}
 			return true;
 		} catch (IOException e) {
 			log.error(e.getMessage());
-			e.printStackTrace();
 		}
 		return false;
 	}
@@ -104,7 +104,7 @@ public class EtcDownloader {
 				try {
 					out.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.error(e.getMessage());
 				} finally {
 					out = null;
 				}
@@ -115,8 +115,10 @@ public class EtcDownloader {
 						ftp.logout();
 						ftp.disconnect();
 					}
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				} catch (IOException e) {
+					log.error(e.getMessage());
+				} finally {
+					ftp = null;
 				}
 			}
 		}
@@ -134,6 +136,7 @@ public class EtcDownloader {
 		client.connect(url, port);
 		client.login(username, password);
 		client.enterLocalPassiveMode();
+		client.setConnectTimeout(timeout);
 
 		return client;
 	}

@@ -2,6 +2,14 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"    
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!-- 定义mybatis的全局变量 -->
+	<properties>
+        <!-- 无图记录的最大轮询次数 -->
+		<property name="maxLoop" value="5" />
+        <!-- 单词读取的最大数据量 -->
+        <property name="maxRecords" value="1000" />
+	</properties>
+
 	<!-- Mybatis的框架参数配置 -->
 	<settings>
 		<setting name="cacheEnabled" value="true" />
@@ -9,7 +17,6 @@
 		<setting name="aggressiveLazyLoading" value="true" />
 		<setting name="logImpl" value="LOG4J" />
 	</settings>
-
 	<!-- 实体类别名 -->
 	<typeAliases>
 		<package name="com.expressway.ftp.client.models" />
