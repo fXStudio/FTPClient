@@ -7,7 +7,7 @@ import javax.persistence.Table;
  * @author Ajaxfan
  */
 @Table(name = "st_analytical_tbl")
-public class Analytical {
+public class EtcModel {
 	@Id
 	private String carImage;
 	private String exitDate;

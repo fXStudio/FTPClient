@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.expressway.ftp.client.mapper.AnalyticalMapper;
-import com.expressway.ftp.client.models.Analytical;
+import com.expressway.ftp.client.models.EtcModel;
 
 /**
  * FTP下载工具
@@ -22,17 +22,17 @@ import com.expressway.ftp.client.models.Analytical;
  * @author Ajaxfan
  */
 @Component
-public class FTPDownloader {
+public class EtcDownloader {
 	/** 服务器地址 */
-	private @Value("${com.expressway.ftp.server}") String url;
+	private @Value("${com.expressway.etc.ftp.server}") String url;
 	/** 端口号 */
-	private @Value("${com.expressway.ftp.port}") int port;
+	private @Value("${com.expressway.etc.ftp.port}") int port;
 	/** 用户名 */
-	private @Value("${com.expressway.ftp.username}") String username;
+	private @Value("${com.expressway.etc.ftp.username}") String username;
 	/** 密码 */
-	private @Value("${com.expressway.ftp.password}") String password;
+	private @Value("${com.expressway.etc.ftp.password}") String password;
 	/** 本地路径 */
-	private @Value("${com.expressway.ftp.local_directory}") String local;
+	private @Value("${com.expressway.etc.ftp.local_directory}") String local;
 
 	/** 日志工具类 */
 	private Logger log = Logger.getLogger("com.expressway.ftp.client");
@@ -47,12 +47,10 @@ public class FTPDownloader {
 	 * @param filename
 	 * @return
 	 */
-	public boolean download(List<Analytical> list) {
-		log.debug("Analytical Object Size : " + list.size());
-
+	public boolean download(List<EtcModel> list) {
 		try {
 			// 通过数据结果集来从服务器拉取图片，如果结果集为空，则本地目录不会被创建
-			for (Analytical analytical : list) {
+			for (EtcModel analytical : list) {
 				boolean res = retriveFileFromRemote(analytical);
 				analytical.setScaned("1");// 数据已扫描标识
 				analytical.setImageLoaded(res ? "1" : "0");// 有图为1否则为0
@@ -74,7 +72,7 @@ public class FTPDownloader {
 	 * @param analytical
 	 * @throws IOException
 	 */
-	private boolean retriveFileFromRemote(Analytical analytical) throws IOException {
+	private boolean retriveFileFromRemote(EtcModel analytical) throws IOException {
 		OutputStream out = null;
 		FTPClient ftp = null;
 

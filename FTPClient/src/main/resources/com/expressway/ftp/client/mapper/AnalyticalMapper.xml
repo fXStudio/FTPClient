@@ -3,7 +3,7 @@
 
 <!-- Mapper的配置信息 -->
 <mapper namespace="com.expressway.ftp.client.mapper.AnalyticalMapper">
-    <resultMap id="analyticalMap" type="Analytical">
+    <resultMap id="analyticalMap" type="EtcModel">
         <id property="carImage" column="car_image" />
         <result property="exitDate" column="exit_date"/>
     </resultMap>
@@ -19,5 +19,6 @@
                WHERE image_loaded = '0'
             </otherwise>
          </choose>
+         <![CDATA[AND rownum < 10000]]> 
 	</select>
 </mapper>

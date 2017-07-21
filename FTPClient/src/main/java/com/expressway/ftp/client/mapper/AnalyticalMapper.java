@@ -2,7 +2,7 @@ package com.expressway.ftp.client.mapper;
 
 import java.util.List;
 
-import com.expressway.ftp.client.models.Analytical;
+import com.expressway.ftp.client.models.EtcModel;
 
 import tk.mybatis.mapper.common.base.BaseUpdateMapper;
 
@@ -11,8 +11,8 @@ import tk.mybatis.mapper.common.base.BaseUpdateMapper;
  * 
  * @author Ajaxfan
  */
-public interface AnalyticalMapper extends BaseUpdateMapper<Analytical> {
-	public List<Analytical> getRecords(String beginDate, String endDate);
+public interface AnalyticalMapper extends BaseUpdateMapper<EtcModel> {
+	public List<EtcModel> getRecords(String beginDate, String endDate);
 
-	public List<Analytical> getRecords();
+	public List<EtcModel> getRecords();
 }

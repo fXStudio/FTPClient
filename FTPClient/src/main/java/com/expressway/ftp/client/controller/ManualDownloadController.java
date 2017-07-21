@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.expressway.ftp.client.FTPDownloader;
+import com.expressway.ftp.client.EtcDownloader;
 import com.expressway.ftp.client.mapper.AnalyticalMapper;
 import com.expressway.ftp.client.messages.FeedBackMessage;
 import com.expressway.ftp.client.protocal.ConditionFiled;
@@ -21,7 +21,7 @@ public class ManualDownloadController {
 	/** ETC稽查数据接口 */
 	private @Autowired AnalyticalMapper analyticalMapper;
 	/** FTP文件下载 */
-	private @Autowired FTPDownloader ftpDownloader;
+	private @Autowired EtcDownloader ftpDownloader;
 
 	/**
 	 * 下载图片

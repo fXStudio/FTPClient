@@ -14,7 +14,7 @@ public class FTPDownloadDemo {
 	@Test
 	public void test() {
 //		try {
-//			boolean flag = downFile("10.133.64.171", 21, "fx", "fx", "234", "wer.txt", "D:/");
+//			boolean flag = downFile("128.127.10.90", 21, "cgq", "cgq", "20170613" + "/" + "593", "14B08DF5D57C4D0B9CC3337B3D72F990.jpg", "D:/");
 //			System.out.println(flag);
 //		} catch (Exception e) {
 //			e.printStackTrace();
@@ -42,6 +42,7 @@ public class FTPDownloadDemo {
 				return success;
 			}
 			ftp.changeWorkingDirectory(remotePath);// 转移到FTP服务器目录
+			System.out.println(ftp.printWorkingDirectory());
 			FTPFile[] fs = ftp.listFiles();
 			for (FTPFile ff : fs) {
 				if (ff.getName().equals(fileName)) {
