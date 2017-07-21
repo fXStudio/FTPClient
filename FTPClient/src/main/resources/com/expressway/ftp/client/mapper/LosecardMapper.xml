@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper的配置信息 -->
+<mapper namespace="com.expressway.ftp.client.mapper.LosecardMapper">
+    <resultMap id="resMap" type="MtcModel">
+        <id property="recordNo" column="record_no" />
+        <result property="admId" column="adm_id"/>
+        <result property="tagid" column="tagid"/>
+        <result property="date" column="ente_date"/>
+        <result property="code" column="ente_code"/>
+    </resultMap>
+
+	<select id="getRecords" resultMap="resMap" parameterType="String">
+	    SELECT record_no, adm_id, tagid, ente_date, ente_code
+	    FROM   freeway_losecard
+        <choose>
+           <when test="param1 != null and param2 != null">
+               WHERE  #{param2} >= ente_date AND ente_date >= #{param1}
+           </when>
+           <otherwise>
+               WHERE tagid is null
+            </otherwise>
+         </choose>
+         <![CDATA[AND rownum < 10000]]> 
+	</select>
+</mapper>
