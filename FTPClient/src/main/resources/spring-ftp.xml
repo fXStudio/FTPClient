@@ -23,7 +23,7 @@
 	<!-- 声明JobDetail类 -->
 	<bean id="downloadTask"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="FTPDownloadTask" />
+		<property name="targetObject" ref="ScheduleDownloadTask" />
 		<property name="targetMethod" value="process" />
 	</bean>
 

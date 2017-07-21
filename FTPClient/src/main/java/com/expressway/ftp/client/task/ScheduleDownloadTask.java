@@ -21,8 +21,8 @@ import com.expressway.ftp.client.mapper.TollcollectorMapper;
 import com.expressway.ftp.client.mapper.TypenotmatchMapper;
 import com.expressway.ftp.client.mapper.WeightdevicearnormalMapper;
 
-@Component("FTPDownloadTask")
-public class FTPDownloadTask {
+@Component
+public class ScheduleDownloadTask {
 	/** ETC稽查数据接口 */
 	private @Autowired AnalyticalMapper analyticalMapper;
 
@@ -52,8 +52,8 @@ public class FTPDownloadTask {
 	public void process() throws InterruptedException {
 		log.info("Execute at : " + GregorianCalendar.getInstance().getTime());
 
-		// runEtcLoader();
-		runMtcLoader();
+//		runEtcLoader();
+//		runMtcLoader();
 	}
 
 	/**
@@ -72,9 +72,7 @@ public class FTPDownloadTask {
 		for (IMtcMapper mapper : new IMtcMapper[] { changecardMapper, enterthecarMapper, freenotfreeMapper,
 				heavytruckMapper, longlightMapper, losecardMapper, tollcollectorMapper, typenotmatchMapper,
 				weightdevicearnormalMapper }) {
-			// mtcDownloader.download(mapper.getRecords(), mapper);
-
-			System.out.println(mapper.getRecords().size());
+			mtcDownloader.download(mapper.getRecords(), mapper);
 		}
 	}
 }

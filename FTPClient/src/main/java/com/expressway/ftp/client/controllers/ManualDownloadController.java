@@ -1,4 +1,4 @@
-package com.expressway.ftp.client.controller;
+package com.expressway.ftp.client.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.expressway.ftp.client.EtcDownloader;
-import com.expressway.ftp.client.mapper.AnalyticalMapper;
 import com.expressway.ftp.client.messages.FeedBackMessage;
 import com.expressway.ftp.client.protocal.ConditionFiled;
+import com.expressway.ftp.client.task.ManualDownloadTask;
 
 /**
  * @author Ajaxfan
@@ -19,9 +18,7 @@ import com.expressway.ftp.client.protocal.ConditionFiled;
 @RequestMapping(value = "services", method = RequestMethod.POST)
 public class ManualDownloadController {
 	/** ETC稽查数据接口 */
-	private @Autowired AnalyticalMapper analyticalMapper;
-	/** FTP文件下载 */
-	private @Autowired EtcDownloader ftpDownloader;
+	private @Autowired ManualDownloadTask manualDownloadTask;
 
 	/**
 	 * 下载图片
@@ -29,10 +26,12 @@ public class ManualDownloadController {
 	 * @param request
 	 * @param cf
 	 * @return
+	 * @throws InterruptedException
 	 */
 	@RequestMapping("manualdownload")
-	public Object systemLogin(HttpServletRequest request, ConditionFiled cf) {
-		return new FeedBackMessage(
-				ftpDownloader.download(analyticalMapper.getRecords(cf.getBeginDate(), cf.getEndDate())));
+	public Object systemLogin(HttpServletRequest request, ConditionFiled cf) throws InterruptedException {
+		manualDownloadTask.process(cf.getBeginDate(), cf.getEndDate());
+
+		return new FeedBackMessage(true);
 	}
 }
